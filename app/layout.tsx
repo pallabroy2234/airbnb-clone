@@ -5,6 +5,8 @@ import Navbar from "@/app/components/Navbar/Navbar";
 import ClientOnly from "@/app/components/ClientOnly";
 import RegisterModal from "./components/modals/RegisterModal";
 import ToasterProvider from "./providers/ToasterProvider";
+import LogInModal from "./components/modals/LogInModal";
+import {getCurrentUser} from "./actions/getCurrentUser";
 
 // import Modal from "@/app/components/modals/Modal";
 
@@ -17,7 +19,8 @@ export const metadata: Metadata = {
   description: "Airbnb Clone",
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default async function RootLayout({children}: {children: React.ReactNode}) {
+  const currentUser = await getCurrentUser();
   return (
     <html lang='en'>
       <body className={font.className}>
@@ -25,7 +28,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           {/* <Modal title='Palalb' isOpen actionLabel='submit' secondaryActionLabel={"Pallab"} /> */}
           <ToasterProvider />
           <RegisterModal />
-          <Navbar />
+          <LogInModal />
+          <Navbar currentUser={currentUser} />
         </ClientOnly>
         {children}
       </body>
