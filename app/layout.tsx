@@ -7,6 +7,7 @@ import RegisterModal from "./components/modals/RegisterModal";
 import ToasterProvider from "./providers/ToasterProvider";
 import LogInModal from "./components/modals/LogInModal";
 import {getCurrentUser} from "./actions/getCurrentUser";
+import RentModal from "./components/modals/RentModal";
 
 // import Modal from "@/app/components/modals/Modal";
 
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const currentUser = await getCurrentUser();
+
   return (
     <html lang='en'>
       <body className={font.className}>
@@ -29,6 +31,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
           <ToasterProvider />
           <RegisterModal />
           <LogInModal />
+          <RentModal />
           <Navbar currentUser={currentUser} />
         </ClientOnly>
         {children}

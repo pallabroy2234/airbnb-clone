@@ -1,7 +1,7 @@
 "use client";
+import {useCallback, useState} from "react";
 
 import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
-import React, {useState} from "react";
 import Modal from "./Modal";
 import userRegisterModal from "@/app/hooks/userRegister";
 import axios from "axios";
@@ -11,8 +11,13 @@ import {toast} from "react-hot-toast";
 import {FcGoogle} from "react-icons/fc";
 import Button from "../Button";
 import {AiFillGithub} from "react-icons/ai";
+import {signIn} from "next-auth/react";
+import useLoginModal from "@/app/hooks/useLoginModal";
 
 const RegisterModal = () => {
+
+  // 
+  const loginModal = useLoginModal();
   const registerModal = userRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,6 +49,12 @@ const RegisterModal = () => {
       });
   };
 
+  //  Register modal Close and login modal open function
+  const toggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [registerModal, loginModal]);
+
   // register modal  body
   const bodyContent = (
     <div className='flex flex-col gap-4'>
@@ -61,12 +72,12 @@ const RegisterModal = () => {
   const footerContent = (
     <div className='flex flex-col gap-4 mt-3'>
       <hr />
-      <Button outline label='Continue with google' icon={FcGoogle} onClick={() => {}} />
-      <Button outline label='Continue with github' icon={AiFillGithub} onClick={() => {}} />
+      <Button outline label='Continue with google' icon={FcGoogle} onClick={() => signIn("google")} />
+      <Button outline label='Continue with github' icon={AiFillGithub} onClick={() => signIn("github")} />
       <div className='text-neutral-500 text-center mt-4 font-light'>
         <div className='flex flex-row gap-2 items-center justify-center'>
           <div>Already have an account?</div>
-          <div onClick={registerModal.onClose} className='text-neutral-800 cursor-pointer hover:underline '>
+          <div onClick={toggle} className='text-neutral-800 cursor-pointer hover:underline '>
             Log in
           </div>
         </div>
